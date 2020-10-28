@@ -38,5 +38,4 @@ class YunpianProvider(IProvider):
 
     def make_receiver_blueprint(self):
         """ Create the receiver blueprint """
-        from . import receiver
-        return receiver.bp
+        raise NotImplementedError('Yunpian do not support incoming SMSes')

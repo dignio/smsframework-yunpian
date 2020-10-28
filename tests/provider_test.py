@@ -27,9 +27,4 @@ class YunpianProviderTest(unittest.TestCase):
     def test_send(self):
         """ Test message send """
         gw = self.gw
-        self.assertTrue(Fasle, 'Implement the test!')
-
-    @freeze_time('2014-07-01 12:00:00')
-    def test_receive_message(self):
-        """ Test message receipt """
-        self.assertTrue(Fasle, 'Implement the test!')
+        self.assertTrue(False, 'Implement the test!')
