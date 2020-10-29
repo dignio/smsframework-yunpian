@@ -27,7 +27,7 @@ class YunpianProvider(IProvider):
         
         # Do not forget all possible exceptions
         try:
-            param = {YC.MOBILE: message.dst,YC.TEXT: message.body}
+            param = {YC.MOBILE: '+' + message.dst,YC.TEXT: message.body}
             r = self.api_client.sms().single_send(param)
             if not r.is_succ():
                 msg = '{} {}'.format(r.code(), r.msg())
