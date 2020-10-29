@@ -12,10 +12,11 @@ except ImportError: # Py2
 class YunpianProvider(IProvider):
     """ Yunpian provider """
 
-    def __init__(self, gateway, name, apikey):
+    def __init__(self, gateway, name, apikey, signature=None):
         """ Configure Yunpian provider
         """
         self.api_client = YunpianClient(apikey)
+        self.signature = signature
         super(YunpianProvider, self).__init__(gateway, name)
 
     def send(self, message):
@@ -27,7 +28,10 @@ class YunpianProvider(IProvider):
         
         # Do not forget all possible exceptions
         try:
-            param = {YC.MOBILE: '+' + message.dst,YC.TEXT: message.body}
+            body = message.body
+            if self.signature:
+                body = self.signature + body
+            param = {YC.MOBILE: '+' + message.dst,YC.TEXT: body}
             r = self.api_client.sms().single_send(param)
             if not r.is_succ():
                 msg = '{} {}'.format(r.code(), r.msg())

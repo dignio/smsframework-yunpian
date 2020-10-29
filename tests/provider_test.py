@@ -17,7 +17,7 @@ class YunpianProviderTest(unittest.TestCase):
         # Gateway
         gw = self.gw = Gateway()
         gw.add_provider('null', NullProvider)  # provocation
-        gw.add_provider('main', YunpianProvider, apikey='my_api_key1234')
+        gw.add_provider('main', YunpianProvider, apikey='my_api_key1234', signature='Google')
 
         # Flask
         app = self.app = Flask(__name__)
@@ -46,7 +46,9 @@ class YunpianProviderTest(unittest.TestCase):
 
         message = gw.send(OutgoingMessage('+123456', 'hey', src='dignio', provider='main'))
         self.assertEqual(len(responses.calls), 1)
+
         self.assertIn('my_api_key1234', responses.calls[0].request.body)
+        self.assertIn('Google', responses.calls[0].request.body)
         self.assertEqual(message.msgid, 16741236146)
 
     @responses.activate
@@ -54,8 +56,8 @@ class YunpianProviderTest(unittest.TestCase):
         """ Test message send """
         gw = self.gw
         bad_json = {
-            'code': 2,
             'msg': 'Required parameter has format error',
+            'code': 2,
             'detail': 'Format the parameter by prompt.'
         }
         responses.add(

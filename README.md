@@ -40,6 +40,7 @@ Config
 Source: /smsframework_yunpian/provider.py
 
 -  ``apikey``: Api key
+-  ``signature``: Optional signature, if set it will be prepended to all SMS. Example: `"[MyCompany]"`
 
 Sending Parameters
 ==================
