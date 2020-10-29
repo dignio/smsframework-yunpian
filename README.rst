@@ -7,7 +7,10 @@ SMSframework Yunpian Provider
 `smsframework <https://pypi.python.org/pypi/smsframework/>`__.
 
 You need an account with "SMS Server" service set up. You'll need the
-following configuration: username, password.
+following configuration: apikey.
+Also you should know, that not any SMS can be sent. But only SMS that match the template or have [Youcompany] signature.
+Template can be set here - https://www.yunpian.com/console/#/admin
+Example template is [MyCompany] `You secret code: #code#`, where `code` is a variable.
 
 Installation
 ============
