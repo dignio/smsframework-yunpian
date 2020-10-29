@@ -23,6 +23,7 @@ setup(
 
     install_requires=[
         'smsframework >= 0.0.9',
+        'yunpian-python-sdk'
     ],
     test_suite='nose.collector',
     include_package_data=True,

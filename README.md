@@ -16,10 +16,6 @@ Install from pypi:
 
     $ pip install smsframework_yunpian
 
-To receive SMS messages, you need to ensure that 
-[Flask microframework](http://flask.pocoo.org) is also installed:
-
-    $ pip install smsframework_yunpian[receiver]
 
 Initialization
 ==============
@@ -29,10 +25,7 @@ Initialization
 
     gateway = Gateway()
     gateway.add_provider('yunpian', YunpianProvider,
-        user='kolypto',
-        password='123',
-        https=False,
-        use_prefix=True
+        apikey='secret_api_key'
     )
 
 Config
@@ -40,10 +33,7 @@ Config
 
 Source: /smsframework_yunpian/provider.py
 
--  ``user: str``: Account username
--  ``password: str``: Account password
--  ``https: bool``: Use HTTPS for outgoing messages? Default: ``False``
--  ``use_prefix: bool``: Do you use prefixes for incoming messages?
+-  ``apikey``: Api key
 
 Sending Parameters
 ==================
@@ -67,24 +57,3 @@ MessageStatus.meta
 ------------------
 
 Provider-specific message status fields.
-
-Receivers
-=========
-
-Source: /smsframework_yunpian/receiver.py
-
-Message Receiver: /im
----------------------
-
-Go to Configuration > Connections, click 'Change'. Put the message
-receiver URL into "HTTP url" field.
-
-Message Receiver URL: ``<provider-name>/im``
-
-Status Receiver: /status
-------------------------
-
-Go to Configuration > Connections, click 'Change'. Put the message
-receiver URL into "HTTP Status url" field.
-
-Status Receiver URL: ``<provider-name>/status``

@@ -1,5 +1,7 @@
 from smsframework import IProvider, exc
 from . import error
+from yunpian_python_sdk.model import constant as YC
+from yunpian_python_sdk.ypclient import YunpianClient
 
 try: # Py3
     from urllib.request import URLError, HTTPError
@@ -10,10 +12,10 @@ except ImportError: # Py2
 class YunpianProvider(IProvider):
     """ Yunpian provider """
 
-    def __init__(self, gateway, name, **any_custom_provider_settings):
+    def __init__(self, gateway, name, apikey):
         """ Configure Yunpian provider
         """
-        Custom code to configure provider
+        self.api_client = YunpianClient(apikey)
         super(YunpianProvider, self).__init__(gateway, name)
 
     def send(self, message):
@@ -25,7 +27,16 @@ class YunpianProvider(IProvider):
         
         # Do not forget all possible exceptions
         try:
-            message.msgid = Custom code to send SMS
+            param = {YC.MOBILE: message.dst,YC.TEXT: message.body}
+            r = self.api_client.sms().single_send(param)
+            if not r.is_succ():
+                msg = '{} {}'.format(r.code(), r.msg())
+                if r.detail():
+                    msg += r.detail()
+                if r.exception():
+                    msg += ' Exception: {}.'.format(r.exception())
+                raise error.YunpianProviderError(msg)
+            message.msgid = r.data().get('sid')
             return message
         except AssertionError as e:
             raise exc.RequestError(str(e))
@@ -33,8 +44,6 @@ class YunpianProvider(IProvider):
             raise exc.MessageSendError(str(e))
         except URLError as e:
             raise exc.ConnectionError(str(e))
-        except CustomErrror as e:
-            raise error.YunpianProviderError(str(e))
 
     def make_receiver_blueprint(self):
         """ Create the receiver blueprint """
